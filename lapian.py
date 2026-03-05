@@ -29,7 +29,7 @@ from enum import Enum
 from pathlib import Path
 from typing import Callable, Optional
 
-__version__ = "1.2.0"
+__version__ = "1.3.0"
 
 # ============================================================================
 # Section 1: Constants & i18n

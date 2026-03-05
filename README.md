@@ -106,6 +106,9 @@ lapian -p <preset> [options] <input_files_or_dirs...>
 | `--crf` | int | *(preset default)* | Override CRF quality value |
 | `--fps` | int | `10` | GIF framerate |
 | `--width` | int | *(original)* | Max output width in pixels |
+| `--resolution` | choice | *(original)* | Output resolution: `2160p`, `1440p`, `1080p`, `720p`, `480p`, `360p`, `240p` |
+| `--bitrate` | string | *(CRF-based)* | Video bitrate, e.g. `2M`, `500k` |
+| `--video-fps` | choice | *(original)* | Output framerate: `60`, `30`, `25`, `24`, `15` |
 | `--audio-format` | choice | `mp3` | Audio format: `mp3` or `aac` |
 | `--dry-run` | flag | `false` | Print FFmpeg commands without executing |
 | `--gui` | flag | `false` | Launch GUI mode |
@@ -175,16 +178,16 @@ Produces H.264 Baseline profile video with AAC audio, guaranteed to play nativel
 
 ### `minsize` - Minimum Size MP4
 
-Aggressively compresses video for smallest possible file size while maintaining acceptable quality.
+Aggressively compresses video for smallest possible file size while maintaining acceptable quality. Uses H.264 Baseline for maximum Android/device compatibility.
 
 | Parameter | Default | Notes |
 |---|---|---|
 | CRF | 28 | Higher than android preset for more compression |
-| Video codec | H.265/HEVC preferred | Falls back to H.264 CRF 30 if HEVC unavailable |
-| Audio codec | AAC | Mono, 96 kbps |
+| Video codec | H.264 (Baseline) | Level 3.1, yuv420p pixel format |
+| Audio codec | AAC | Mono, 64 kbps |
 | Max height | 720p | Auto-downscales if source exceeds 720p |
 
-- HEVC encoder chain: hevc_nvenc > hevc_qsv > hevc_amf > hevc_vaapi > hevc_videotoolbox > libx265
+- H.264 encoder chain: h264_nvenc > h264_qsv > h264_amf > h264_vaapi > h264_videotoolbox > libx264
 - Mono audio at reduced bitrate for smaller output
 - Ideal for archival, sharing on messaging apps, or limited storage
 
@@ -211,14 +214,6 @@ LaPian automatically detects available hardware encoders at startup and selects 
 4. `h264_vaapi` (Linux VA-API)
 5. `h264_videotoolbox` (macOS)
 6. `libx264` (Software fallback)
-
-### H.265/HEVC Encoder Chain (minsize preset)
-1. `hevc_nvenc` (NVIDIA GPU)
-2. `hevc_qsv` (Intel Quick Sync)
-3. `hevc_amf` (AMD GPU)
-4. `hevc_vaapi` (Linux VA-API)
-5. `hevc_videotoolbox` (macOS)
-6. `libx265` (Software fallback)
 
 Use `--encoder <name>` to force a specific encoder if auto-detection doesn't choose the one you want.
 
