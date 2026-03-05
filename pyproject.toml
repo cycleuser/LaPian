@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lapian"
+dynamic = ["version"]
+description = "LaPian (拉片) — Batch video transcoder with hardware-accelerated encoding. CLI & GUI. Supports GIF, Android MP4, min-size MP4, and audio extraction."
+readme = "README.md"
+license = "GPL-3.0-or-later"
+requires-python = ">=3.8"
+authors = [
+    { email = "wedonotuse@outlook.com" },
+]
+keywords = [
+    "video", "transcoder", "ffmpeg", "batch", "hardware-acceleration",
+    "nvenc", "qsv", "vaapi", "gif", "android", "hevc", "h264", "lapian",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Environment :: X11 Applications",
+    "Intended Audience :: End Users/Desktop",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Multimedia :: Video :: Conversion",
+]
+
+[project.urls]
+Homepage = "https://github.com/cycleuser/LaPian"
+Repository = "https://github.com/cycleuser/LaPian"
+Issues = "https://github.com/cycleuser/LaPian/issues"
+
+[project.scripts]
+lapian = "lapian:main"
+
+[tool.setuptools]
+py-modules = ["lapian"]
+
+[tool.setuptools.dynamic]
+version = {attr = "lapian.__version__"}

@@ -1,0 +1,19 @@
+# LaPian (拉片) - Python Dependencies
+#
+# This program uses only Python standard library modules.
+# No pip packages are required.
+#
+# External requirement:
+#   FFmpeg (including ffprobe) must be installed and available in PATH.
+#
+#   Install FFmpeg:
+#     Ubuntu/Debian:  sudo apt install ffmpeg
+#     Fedora:         sudo dnf install ffmpeg
+#     Arch Linux:     sudo pacman -S ffmpeg
+#     macOS:          brew install ffmpeg
+#     Windows:        https://ffmpeg.org/download.html
+#
+# Optional (for tkinter GUI, usually included with Python):
+#     Ubuntu/Debian:  sudo apt install python3-tk
+#     Fedora:         sudo dnf install python3-tkinter
+#     macOS:          brew install python-tk
