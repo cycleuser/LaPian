@@ -267,6 +267,47 @@ MP4、MKV、AVI、MOV、WebM、FLV、WMV、TS、M4V、3GP、MPG、MPEG、VOB、O
 - **总耗时**：批处理总用时
 - **失败文件列表**：如有失败，会列出具体文件路径
 
+## Python API
+
+```python
+from lapian import transcode, batch_transcode, probe_video
+
+# 探测视频元数据
+info = probe_video("input.mp4")
+print(info.data)  # 时长、分辨率、编码器等
+
+# 转码单个文件
+result = transcode("input.mp4", preset="minsize")
+print(result.data["output_path"])
+
+# 批量转码目录
+result = batch_transcode("./videos", preset="android")
+print(result.metadata)  # 统计摘要
+```
+
+## Agent 集成（OpenAI Function Calling）
+
+LaPian 提供 OpenAI 兼容的工具定义，可供 LLM Agent 调用：
+
+```python
+from lapian.tools import TOOLS, dispatch
+
+response = client.chat.completions.create(
+    model="gpt-4o",
+    messages=messages,
+    tools=TOOLS,
+)
+
+result = dispatch(
+    tool_call.function.name,
+    tool_call.function.arguments,
+)
+```
+
+## CLI 帮助
+
+![CLI 帮助](images/lapian_help.png)
+
 ## 许可证
 
 本项目采用 GPL-3.0-or-later 许可证。详见 [LICENSE](LICENSE) 文件。

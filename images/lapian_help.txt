@@ -1,0 +1,72 @@
+usage: lapian [-h] [-p {gif,android,minsize,audio}] [-o OUTPUT] [-r]
+              [--no-recursive] [--encoder ENCODER] [--crf CRF] [--fps FPS]
+              [--width WIDTH] [--audio-format {mp3,aac}]
+              [--resolution {2160p,1440p,1080p,720p,480p,360p,240p}]
+              [--bitrate BITRATE] [--video-fps {60,30,25,24,15}] [--dry-run]
+              [--gui] [-v] [-V] [--json] [--quiet] [--deadvert]
+              [--deadvert-method {audio,video}]
+              [--deadvert-threshold DEADVERT_THRESHOLD]
+              [--deadvert-min-duration DEADVERT_MIN_DURATION]
+              [--deadvert-interval DEADVERT_INTERVAL] [--confirm]
+              [--detect-only]
+              [input ...]
+
+LaPian (拉片) — Batch Video Transcoder with hardware acceleration support.
+
+positional arguments:
+  input                 Input video files or directories
+
+options:
+  -h, --help            show this help message and exit
+  -p {gif,android,minsize,audio}, --preset {gif,android,minsize,audio}
+                        Transcoding preset: gif, android, minsize, audio
+  -o OUTPUT, --output OUTPUT
+                        Output directory (default: ./transcoded)
+  -r, --recursive       Recursively search directories for videos (default:
+                        on)
+  --no-recursive        Disable recursive directory search
+  --encoder ENCODER     Force a specific encoder (e.g., h264_nvenc, libx264)
+  --crf CRF             Override CRF value
+  --fps FPS             GIF framerate (default: 10)
+  --width WIDTH         Max output width in pixels
+  --audio-format {mp3,aac}
+                        Audio format for audio preset (default: mp3)
+  --resolution {2160p,1440p,1080p,720p,480p,360p,240p}
+                        Output resolution (default: original)
+  --bitrate BITRATE     Video bitrate, e.g. 2M, 500k (default: CRF-based
+                        quality)
+  --video-fps {60,30,25,24,15}
+                        Output video framerate (default: original)
+  --dry-run             Print FFmpeg commands without executing
+  --gui                 Launch GUI mode
+  -v, --verbose         Verbose FFmpeg output
+  -V, --version         show program's version number and exit
+  --json                Output results as JSON
+  --quiet               Suppress non-error output
+
+deadvert (ad removal):
+  --deadvert            Enable automatic ad detection and removal across
+                        multiple videos
+  --deadvert-method {audio,video}
+                        Detection method: audio fingerprint (needs fpcalc) or
+                        video frame hash (needs Pillow+imagehash). Default:
+                        audio
+  --deadvert-threshold DEADVERT_THRESHOLD
+                        Minimum number of videos a segment must appear in to
+                        be considered an ad (default: 2)
+  --deadvert-min-duration DEADVERT_MIN_DURATION
+                        Minimum ad segment duration in seconds (default: 5.0)
+  --deadvert-interval DEADVERT_INTERVAL
+                        Frame extraction interval in seconds for video method
+                        (default: 1.0)
+  --confirm             Preview detected ad segments before trimming
+  --detect-only         Only detect and report ad segments, do not trim
+
+Examples:
+  lapian -p android video.mp4
+  lapian -p gif -o ./gifs --fps 15 --width 320 *.mp4
+  lapian -p minsize -r /path/to/videos/
+  lapian -p audio --audio-format aac video.mkv
+  lapian --deadvert ep01.mp4 ep02.mp4 ep03.mp4
+  lapian --deadvert -p android --confirm ep*.mp4
+  lapian --gui

@@ -257,6 +257,49 @@ Duplicate filenames are automatically resolved by appending `_1`, `_2`, etc.
 | 0 | All jobs completed successfully |
 | 1 | One or more jobs failed |
 
+## Python API
+
+```python
+from lapian import transcode, batch_transcode, probe_video
+
+# Probe video metadata
+info = probe_video("input.mp4")
+print(info.data)  # duration, resolution, codecs, etc.
+
+# Transcode a single file
+result = transcode("input.mp4", preset="minsize")
+print(result.data["output_path"])
+
+# Batch transcode a directory
+result = batch_transcode("./videos", preset="android")
+print(result.metadata)  # summary stats
+```
+
+## Agent Integration (OpenAI Function Calling)
+
+LaPian exposes OpenAI-compatible tools for LLM agents:
+
+```python
+from lapian.tools import TOOLS, dispatch
+
+# Pass TOOLS to the OpenAI chat completion API
+response = client.chat.completions.create(
+    model="gpt-4o",
+    messages=messages,
+    tools=TOOLS,
+)
+
+# Dispatch the tool call
+result = dispatch(
+    tool_call.function.name,
+    tool_call.function.arguments,
+)
+```
+
+## CLI Help
+
+![CLI Help](images/lapian_help.png)
+
 ## License
 
 This project is licensed under GPL-3.0-or-later. See the [LICENSE](LICENSE) file for details.

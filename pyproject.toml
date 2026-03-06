@@ -39,10 +39,10 @@ Repository = "https://github.com/cycleuser/LaPian"
 Issues = "https://github.com/cycleuser/LaPian/issues"
 
 [project.scripts]
-lapian = "lapian:main"
+lapian = "lapian.cli:main"
 
 [tool.setuptools]
-py-modules = ["lapian"]
+packages = ["lapian"]
 
 [tool.setuptools.dynamic]
 version = {attr = "lapian.__version__"}
