@@ -187,7 +187,7 @@ class TestPackageExports:
     def test_version(self):
         import lapian
         assert hasattr(lapian, "__version__")
-        assert lapian.__version__ == "1.3.0"
+        assert lapian.__version__ == "1.3.2"
 
     def test_toolresult(self):
         from lapian import ToolResult

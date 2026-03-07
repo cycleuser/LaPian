@@ -12,12 +12,12 @@ echo "[1/5] Bumping patch version..."
 "$PYTHON" -c "
 import re, sys
 p = '$VERSION_FILE'
-t = open(p,encoding='utf-8').read()
+t = open(p, encoding='utf-8').read()
 m = re.search(r'(__version__\s*=\s*\"(\d+\.\d+\.)(\d+)\")', t)
 if not m: print('ERROR: cannot parse version'); sys.exit(1)
 old_v = m.group(2) + m.group(3)
 new_v = m.group(2) + str(int(m.group(3)) + 1)
-open(p,'w',encoding='utf-8').write(t.replace(m.group(1), '__version__ = \"' + new_v + '\"'))
+open(p, 'w', encoding='utf-8').write(t.replace(m.group(1), '__version__ = \"' + new_v + '\"'))
 print(f'  {old_v} -> {new_v}')
 "
 

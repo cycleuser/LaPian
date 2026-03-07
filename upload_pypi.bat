@@ -9,7 +9,7 @@ set "VERSION_FILE=lapian\__init__.py"
 echo === LaPian PyPI Upload ===
 
 echo [1/5] Bumping patch version...
-%PYTHON% -c "import re,sys;p='%VERSION_FILE%'.replace('\\','/');t=open(p).read();m=re.search(r'(__version__\s*=\s*\"(\d+\.\d+\.)(\d+)\")',t);old=m.group(2)+m.group(3);new=m.group(2)+str(int(m.group(3))+1);open(p,'w').write(t.replace(m.group(1),'__version__ = \"'+new+'\"'));print(f'  {old} -> {new}')"
+%PYTHON% -c "import re,sys;p='%VERSION_FILE%'.replace('\\','/');t=open(p,encoding='utf-8').read();m=re.search(r'(__version__\s*=\s*\"(\d+\.\d+\.)(\d+)\")',t);old=m.group(2)+m.group(3);new=m.group(2)+str(int(m.group(3))+1);open(p,'w',encoding='utf-8').write(t.replace(m.group(1),'__version__ = \"'+new+'\"'));print(f'  {old} -> {new}')"
 if %errorlevel% neq 0 (echo Version bump failed! & exit /b 1)
 
 echo [2/5] Cleaning old builds...
