@@ -1,31 +1,34 @@
 @echo off
-chcp 65001 >nul
-echo === LaPian PyPI Upload Script ===
+REM LaPian - Build and upload to PyPI
+setlocal
+cd /d "%~dp0"
 
-REM Clean previous build artifacts
-echo [1/4] Cleaning old build artifacts...
-if exist dist rd /s /q dist
-if exist build rd /s /q build
-for /d %%i in (*.egg-info) do rd /s /q "%%i"
+set "PYTHON=C:\Miniconda3\envs\dev\python.exe"
+set "VERSION_FILE=lapian\__init__.py"
 
-REM Install/upgrade build tools
-echo [2/4] Installing/upgrading build tools...
-pip install --upgrade build twine
-if errorlevel 1 goto :error
+echo === LaPian PyPI Upload ===
 
-REM Build the package
-echo [3/4] Building package...
-python -m build
-if errorlevel 1 goto :error
+echo [1/5] Bumping patch version...
+%PYTHON% -c "import re,sys;p='%VERSION_FILE%'.replace('\\','/');t=open(p,encoding='utf-8').read();m=re.search(r'(__version__\s*=\s*\"(\d+\.\d+\.)(\d+)\")',t);old=m.group(2)+m.group(3);new=m.group(2)+str(int(m.group(3))+1);open(p,'w',encoding='utf-8').write(t.replace(m.group(1),'__version__ = \"'+new+'\"'));print(f'  {old} -> {new}')"
+if %errorlevel% neq 0 (echo Version bump failed! & exit /b 1)
 
-REM Upload to PyPI
-echo [4/4] Uploading to PyPI...
-python -m twine upload dist\*
-if errorlevel 1 goto :error
+echo [2/5] Cleaning old builds...
+if exist dist rmdir /s /q dist
+if exist build rmdir /s /q build
+for /d %%i in (*.egg-info) do rmdir /s /q "%%i"
+
+echo [3/5] Installing build tools...
+%PYTHON% -m pip install --upgrade build twine -q
+
+echo [4/5] Building package...
+%PYTHON% -m build
+if %errorlevel% neq 0 (echo Build failed! & exit /b 1)
+%PYTHON% -m twine check dist\*
+if %errorlevel% neq 0 (echo Check failed! & exit /b 1)
+
+echo [5/5] Uploading to PyPI...
+%PYTHON% -m twine upload dist\*
+if %errorlevel% neq 0 (echo Upload failed! & exit /b 1)
 
 echo === Done! ===
-goto :eof
-
-:error
-echo === Upload failed! ===
-exit /b 1
+endlocal
