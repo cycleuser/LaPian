@@ -9,7 +9,7 @@ with graceful fallback to software encoding.
 Requires FFmpeg installed and available in PATH.
 """
 
-__version__ = "1.3.3"
+__version__ = "1.3.4"
 
 from .core import (
     TranscodeJob,
